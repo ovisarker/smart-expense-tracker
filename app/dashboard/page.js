@@ -6,6 +6,7 @@ import FooterCredit from "@/components/FooterCredit";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 import dayjs from "dayjs";
+
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const CATEGORIES = ["Food","Transport","Rent","Shopping","Bills","Other"];
@@ -19,7 +20,6 @@ export default function Dashboard(){
   const [editing,setEditing] = useState(null);
   const [err,setErr] = useState("");
 
-  // Filters
   const [month,setMonth] = useState(dayjs().format("YYYY-MM"));
   const [fCategory,setFCategory] = useState("");
   const [fKind,setFKind] = useState("");
@@ -71,7 +71,6 @@ export default function Dashboard(){
     setForm({ title:it.title, amount:it.amount, category:it.category, kind:it.kind, date: it.date?.slice(0,10) });
   }
 
-  // Aggregates
   const totalsByCategory = useMemo(()=>{
     const t = Object.fromEntries(CATEGORIES.map(c=>[c,0]));
     for(const x of items) if(x.kind==="expense") t[x.category] = (t[x.category]||0) + x.amount;
@@ -83,7 +82,6 @@ export default function Dashboard(){
   const savings = Math.max(income - expense, 0);
   const savingsPct = income ? (savings/income)*100 : 0;
 
-  // Budget alerts
   const overBudget = user?.monthlyBudget && expense > user.monthlyBudget;
   const nearBudget  = user?.monthlyBudget && expense > user.monthlyBudget*0.8 && !overBudget;
 
@@ -119,7 +117,7 @@ export default function Dashboard(){
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* Sidebar (desktop + mobile) */}
+      {/* Sidebar */}
       <Sidebar open={sidebarOpen} onClose={()=>setSidebarOpen(false)} />
 
       {/* Top bar */}
@@ -148,7 +146,7 @@ export default function Dashboard(){
         </div>
       </header>
 
-      {/* Main content */}
+      {/* Main */}
       <main className="md:ml-64 p-4 sm:p-6">
         {/* Filters */}
         <div className="bg-white dark:bg-gray-900 rounded-2xl shadow p-4 mb-6 grid sm:grid-cols-4 gap-3">
