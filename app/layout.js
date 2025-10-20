@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Smart Expense Tracker",
@@ -8,7 +9,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="bg-gray-50 dark:bg-gray-950">
-      <body className="text-gray-900 dark:text-gray-100">{children}</body>
+      <body className="text-gray-900 dark:text-gray-100">
+        {children}
+        <Toaster position="top-center" />
+      </body>
     </html>
   );
 }
