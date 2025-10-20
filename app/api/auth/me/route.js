@@ -7,5 +7,13 @@ export async function GET() {
   if (!userPayload) return new Response("Unauthorized", { status: 401 });
   await dbConnect();
   const user = await User.findById(userPayload._id).lean();
-  return Response.json({ user: { _id: user._id, name: user.name, email: user.email, monthlyBudget: user.monthlyBudget||0 } });
+  return Response.json({
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      monthlyBudget: user.monthlyBudget || 0,
+      themePreference: user.themePreference || "system"   // ← add
+    }
+  });
 }
