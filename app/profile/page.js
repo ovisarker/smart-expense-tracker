@@ -26,13 +26,11 @@ export default function ProfilePage(){
     e.preventDefault();
     setSaving(true); setMsg("");
     try {
-      // Save budget
       await fetch("/api/users/budget", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({ monthlyBudget: Number(budget || 0) })
       });
-      // Save theme
       await fetch("/api/users/theme", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
