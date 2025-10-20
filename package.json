@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest"
+    "test": "vitest",
+    "seed": "node scripts/seed.js"              // ← add
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -19,7 +20,8 @@
     "next": "14.2.5",
     "react": "18.3.1",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "react-hot-toast": "^2.4.1"                 // ← add
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.5",
