@@ -11,8 +11,23 @@ export function verifyToken(token) {
   try { return jwt.verify(token, process.env.JWT_SECRET); } catch { return null; }
 }
 export function setAuthCookie(user) {
-  const token = signToken({ _id: user._id, email: user.email, name: user.name, monthlyBudget: user.monthlyBudget });
-  const res = NextResponse.json({ ok: true, user: { name: user.name, email: user.email, _id: user._id, monthlyBudget: user.monthlyBudget||0 } });
+  const token = signToken({
+    _id: user._id,
+    email: user.email,
+    name: user.name,
+    monthlyBudget: user.monthlyBudget,
+    themePreference: user.themePreference || "system"      // ← add
+  });
+  const res = NextResponse.json({
+    ok: true,
+    user: {
+      name: user.name,
+      email: user.email,
+      _id: user._id,
+      monthlyBudget: user.monthlyBudget || 0,
+      themePreference: user.themePreference || "system"    // ← add
+    }
+  });
   res.cookies.set({ name: COOKIE_NAME, value: token, httpOnly: true, sameSite: "lax", secure: true, path: "/", maxAge: 7*24*60*60 });
   return res;
 }
