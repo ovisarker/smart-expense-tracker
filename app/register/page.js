@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -10,10 +11,17 @@ export default function RegisterPage() {
     setErr("");
     const res = await fetch("/api/auth/register", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },   // ← header
       body: JSON.stringify(form)
     });
-    if (res.ok) window.location.href = "/dashboard";
-    else setErr(await res.text());
+    if (res.ok) {
+      toast.success("Account created! Redirecting...");
+      setTimeout(() => (window.location.href = "/dashboard"), 600);
+    } else {
+      const msg = await res.text();
+      setErr(msg);
+      toast.error(msg || "Sign up failed");
+    }
   }
 
   return (
