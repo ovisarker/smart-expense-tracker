@@ -5,8 +5,9 @@ import { getUserFromRequest } from "@/utils/auth";
 export async function POST(req){
   const me = getUserFromRequest();
   if(!me) return new Response("Unauthorized",{status:401});
+  const { theme } = await req.json();
+  if(!["system","light","dark"].includes(theme)) return new Response("Bad theme",{status:400});
   await dbConnect();
-  const { monthlyBudget } = await req.json();
-  const user = await User.findByIdAndUpdate(me._id, { monthlyBudget:Number(monthlyBudget||0) }, { new:true });
-  return Response.json({ user:{ _id:user._id, monthlyBudget:user.monthlyBudget } });
+  const user = await User.findByIdAndUpdate(me._id, { themePreference: theme }, { new:true });
+  return Response.json({ themePreference: user.themePreference });
 }
