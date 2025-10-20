@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
   password: { type:String, required:true },
   role: { type:String, enum:["owner","member"], default:"owner" },
   householdId: { type: mongoose.Schema.Types.ObjectId, ref: "Household" },
-  monthlyBudget: { type:Number, default: 0 }
+  monthlyBudget: { type:Number, default: 0 },
+  themePreference: { type:String, enum:["system","light","dark"], default:"system" }  // ← new
 },{ timestamps:true });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);
