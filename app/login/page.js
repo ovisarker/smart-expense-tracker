@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -8,9 +9,19 @@ export default function LoginPage() {
   async function onSubmit(e) {
     e.preventDefault();
     setErr("");
-    const res = await fetch("/api/auth/login", { method: "POST", body: JSON.stringify(form) });
-    if (res.ok) window.location.href = "/dashboard";
-    else setErr(await res.text());
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },  // ← header
+      body: JSON.stringify(form)
+    });
+    if (res.ok) {
+      toast.success("Welcome back!");
+      setTimeout(() => (window.location.href = "/dashboard"), 400);
+    } else {
+      const msg = await res.text();
+      setErr(msg);
+      toast.error(msg || "Login failed");
+    }
   }
 
   return (
